@@ -15,29 +15,28 @@ def CleanPathMusic(path)
       if File.directory? file
         CleanPathMusic(file)
       elsif
-        ShowMp3Tags(file)
-        #puts CleanFileName(file)
+        CleanFileName(file)
+        lTags = ['artist','title']
+        ShowMp3Tags(file,lTags)
       end
   end
 end
 
-def CleanFileName(file) 
+def CleanFileName(file)
   filename = File.basename(file, File.extname(file))
   filename = filename.gsub(/_/, '').gsub(/-/, ' - ')
   filename = filename.split.map(&:capitalize).join(' ')
   return filename
 end
 
-def ShowMp3Tags(file)
+def ShowMp3Tags(file,lTags)
   if File.extname(file).upcase == '.MP3'
-
     Mp3Info.open(file) do |mp3|
-        puts mp3.tag.title
-        puts mp3.tag.artist
-        #puts mp3.tag.album
-        #puts mp3.tag.tracknum
+      lTags.each do |tags|
+        puts mp3.tag.tags
+      end
     end
-  end   
-end 
+  end
+end
 
 CleanPathMusic(folder_path)
